@@ -19,10 +19,10 @@ jobs:
       - name: Checkout the repository
         uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
 
-      # extract version from addon-release/config.yaml
+      # extract version from addon-stable/config.yaml
       - name: Get version number
         run: |
-          VERSION=$(grep version addon-release/config.yaml | sed -e 's/^version: //')
+          VERSION=$(grep version addon-stable/config.yaml | sed -e 's/^version: //')
           echo "VERSION=$VERSION" >> $GITHUB_ENV
 
       # create a new release for $VERSION
