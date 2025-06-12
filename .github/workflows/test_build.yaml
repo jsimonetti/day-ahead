@@ -24,11 +24,6 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
 
-      - name: Get version to test
-        run: |
-          VERSION=$(grep 'version: ' ./${{ matrix.addon }}/config.yaml | sed -e 's/^version: //')
-          echo "VERSION=$VERSION" >> $GITHUB_ENV
-
       - name: Prepare build
         run: |
           cp -a dao/* ${{ matrix.addon }}
@@ -38,10 +33,9 @@ jobs:
         with:
           args: |
             --test \
-            --generic $VERSION \
+            --generic "test" \
             --${{ matrix.arch }} \
             --image "dao-${{ matrix.arch }}" \
             --target ${{ matrix.addon }} \
-            --version $VERSION \
-            --docker-hub "ghcr.io/${{ github.repository_owner }}" \
+            --version "test" \
             --addon
