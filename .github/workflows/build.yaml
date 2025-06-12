@@ -24,7 +24,7 @@ jobs:
       - name: Get version to build
         if: ${{ github.event_name == 'release' }}
         run: |
-          VERSION=$(grep version ./${{ matrix.addon }}/config.yaml | sed -e 's/^version: //')
+          VERSION=$(grep 'version: ' ./${{ matrix.addon }}/config.yaml | sed -e 's/^version: //')
           echo "VERSION=$VERSION" >> $GITHUB_ENV
 
       - name: Login to GHCR
