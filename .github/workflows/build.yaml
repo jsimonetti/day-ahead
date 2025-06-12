@@ -1,4 +1,4 @@
-name: Build Releases
+name: Build and publish
 
 on:
   workflow_dispatch:
@@ -45,7 +45,7 @@ jobs:
         if: ${{ github.ref_name == env.VERSION }}
         uses: docker/login-action@74a5d142397b4f367a81961eba4e8cd7edddf772 # v3.4.0
         with:
-          username: ${{ github.repository_owner }}
+          username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
           registry: ghcr.io
 
@@ -55,7 +55,7 @@ jobs:
         run: |
           cp -a dao/* ./addon-${{ matrix.addon }}
 
-      - name: Build ${{ matrix.addon }} add-on
+      - name: Build and publish ${{ matrix.addon }} add-on
         if: ${{ github.ref_name == env.VERSION }}
         uses: home-assistant/builder@2025.03.0
         with:
@@ -65,7 +65,7 @@ jobs:
             --image "dao-${{ matrix.arch }}" \
             --target addon-${{ matrix.addon }} \
             --version $VERSION \
-            --docker-hub ghcr.io/${{ github.repository_owner }} \
+            --docker-hub ghcr.io/${{ github.actor }} \
             ${{ env.LATEST }} \
             ${{ env.EXTRA_TAG }} \
             --addon
