@@ -18,6 +18,7 @@ jobs:
       packages: write
 
     steps:
+      # this will always checkout the triggere release tag
       - name: Check out repository
         uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
 
@@ -41,7 +42,7 @@ jobs:
           fi 
 
       - name: Login to GHCR
-        if: ${{ github.event_name == 'release' }}
+        if: ${{ github.ref_name == env.VERSION }}
         uses: docker/login-action@74a5d142397b4f367a81961eba4e8cd7edddf772 # v3.4.0
         with:
           username: ${{ github.repository_owner }}
@@ -64,7 +65,7 @@ jobs:
             --image "dao-${{ matrix.arch }}" \
             --target addon-${{ matrix.addon }} \
             --version $VERSION \
-            --docker-hub ghcr.io/${{ github.actor }} \
+            --docker-hub ghcr.io/${{ github.repository_owner }} \
             ${{ env.LATEST }} \
             ${{ env.EXTRA_TAG }} \
             --addon
