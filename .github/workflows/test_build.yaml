@@ -39,7 +39,7 @@ jobs:
             --test \
             --generic $VERSION \
             --${{ matrix.arch }} \
-            --image "${{ steps.check.outputs.image }}" \
+            --image "dao-${{ matrix.arch }}" \
             --target ${{ matrix.addon }} \
             --version $VERSION \
             --docker-hub "ghcr.io/${{ github.repository_owner }}" \
