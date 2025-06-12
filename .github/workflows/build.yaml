@@ -8,10 +8,10 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    name: Build ${{ matrix.arch }} ${{ matrix.addon }} add-on
+    name: Build ${{ matrix.arch }} ${{ matrix.addon }} addon
     strategy:
       matrix:
-        addon: [ "addon-stable", "addon-testing" ]
+        addon: [ "stable", "testing" ]
         arch: [ "aarch64", "amd64", "i386" ]
     permissions:
       contents: read
@@ -24,7 +24,7 @@ jobs:
       - name: Get version to build
         if: ${{ github.event_name == 'release' }}
         run: |
-          VERSION=$(grep 'version: ' ./${{ matrix.addon }}/config.yaml | sed -e 's/^version: //')
+          VERSION=$(grep 'version: ' ./addon-${{ matrix.addon }}/config.yaml | sed -e 's/^version: //')
           echo "VERSION=$VERSION" >> $GITHUB_ENV
 
       - name: Login to GHCR
@@ -38,7 +38,7 @@ jobs:
       - name: Prepare ${{ matrix.addon }} build
         if: ${{ github.ref_name == env.VERSION }}
         run: |
-          cp -a dao/* ${{ matrix.addon }}
+          cp -a dao/* ./addon-${{ matrix.addon }}
 
       - name: Build ${{ matrix.addon }} add-on
         if: ${{ github.ref_name == env.VERSION }}
@@ -48,7 +48,7 @@ jobs:
             --generic $VERSION \
             --${{ matrix.arch }} \
             --image "dao-${{ matrix.arch }}" \
-            --target ${{ matrix.addon }} \
+            --target addon-${{ matrix.addon }} \
             --version $VERSION \
             --docker-hub "ghcr.io/${{ github.repository_owner }}" \
             --addon

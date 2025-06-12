@@ -9,12 +9,12 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
-    name: Build ${{ matrix.arch }} ${{ matrix.addon }} add-on
+    name: Test build ${{ matrix.arch }} ${{ matrix.addon }} addon
     strategy:
       matrix:
         # we only test build addon-testing for amd64
         # this can be changed if desired
-        addon: [ "addon-testing"]
+        addon: [ "testing"]
         arch: [ "amd64" ]
     permissions:
       contents: read
@@ -26,9 +26,9 @@ jobs:
 
       - name: Prepare build
         run: |
-          cp -a dao/* ${{ matrix.addon }}
+          cp -a dao/* ./addon-${{ matrix.addon }}
 
-      - name: Test build ${{ env.VERSION }}
+      - name: Test build 
         uses: home-assistant/builder@2025.03.0
         with:
           args: |
@@ -36,6 +36,6 @@ jobs:
             --generic "test" \
             --${{ matrix.arch }} \
             --image "dao-${{ matrix.arch }}" \
-            --target ${{ matrix.addon }} \
+            --target addon-${{ matrix.addon }} \
             --version "test" \
             --addon
