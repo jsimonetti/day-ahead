@@ -1,4 +1,4 @@
-name: Create new rc
+name: Create new testing release
 on:
   push:
     branches:
@@ -12,7 +12,7 @@ permissions:
 
 jobs:
   release:
-    name: Create new release
+    name: Create new testing release
     runs-on: ubuntu-latest
     steps:
       # checkout the repo
@@ -22,7 +22,7 @@ jobs:
       # extract version from dao/config.yaml
       - name: Get version number
         run: |
-          VERSION=$(grep version addon-testing/config.yaml | sed -e 's/^version: //')
+          VERSION=$(grep 'version: ' addon-testing/config.yaml | sed -e 's/^version: //')
           echo "VERSION=$VERSION" >> $GITHUB_ENV
 
       # create a new release for $VERSION
