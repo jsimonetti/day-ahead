@@ -3,7 +3,7 @@ name: 刀 Day Ahead Optimizer (TESTING)
 version: 2025.6.2.rc2
 stage: experimental
 slug: day_ahead_opt-testing
-description: Testing repository for DAO
+description: Beta version of DAO. Use only for testing!
 url: https://github.com/corneel27/day-ahead/
 codenotary: cees.van.beek@xs4all.nl
 arch:
