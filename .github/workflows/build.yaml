@@ -64,7 +64,7 @@ jobs:
             --image "dao-${{ matrix.arch }}" \
             --target addon-${{ matrix.addon }} \
             --version $VERSION \
-            --docker-hub ghcr.io/${ACTOR} \
+            --docker-hub ghcr.io/${{ github.actor }} \
             ${{ env.LATEST }} \
             ${{ env.EXTRA_TAG }} \
             --addon
