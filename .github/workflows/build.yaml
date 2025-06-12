@@ -41,12 +41,13 @@ jobs:
           fi 
 
       - name: Login to GHCR
-        if: ${{ github.ref_name == env.VERSION }}
+        if: ${{ github.event_name == 'release' }}
         uses: docker/login-action@74a5d142397b4f367a81961eba4e8cd7edddf772 # v3.4.0
         with:
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
           registry: ghcr.io
+
 
       - name: Prepare ${{ matrix.addon }} build
         if: ${{ github.ref_name == env.VERSION }}
@@ -63,7 +64,7 @@ jobs:
             --image "dao-${{ matrix.arch }}" \
             --target addon-${{ matrix.addon }} \
             --version $VERSION \
-            --docker-hub "ghcr.io/${{ github.repository_owner }}" \
+            --docker-hub ghcr.io/${ACTOR} \
             ${{ env.LATEST }} \
             ${{ env.EXTRA_TAG }} \
             --addon
