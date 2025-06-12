@@ -33,11 +33,11 @@ jobs:
         run: |
           if [[ ${{ matrix.addon }} == "stable" ]]; then
             echo "this is a final release, setting stable tag"
-            echo "LATEST=" >> $GITHUB_ENV;
+            echo "NO_LATEST=" >> $GITHUB_ENV;
             echo "EXTRA_TAG=--additional-tag stable" >> $GITHUB_ENV
           else
             echo "this is a release candidate, not setting stable or latest tag"
-            echo "LATEST=--no-latest" >> $GITHUB_ENV;
+            echo "NO_LATEST=--no-latest" >> $GITHUB_ENV;
             echo "EXTRA_TAG=--additional-tag testing" >> $GITHUB_ENV;
           fi 
 
@@ -66,6 +66,6 @@ jobs:
             --target addon-${{ matrix.addon }} \
             --version $VERSION \
             --docker-hub ghcr.io/${{ github.actor }} \
-            ${{ env.LATEST }} \
+            ${{ env.NO_LATEST }} \
             ${{ env.EXTRA_TAG }} \
             --addon
